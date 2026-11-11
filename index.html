@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <title>Workout Tracker</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f2eb;
+            color: #1c1c1e;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+        h1 { font-size: 24px; margin-bottom: 5px; }
+        .progress { font-size: 14px; color: #2b7a4b; font-weight: bold; margin-bottom: 15px; }
+        .tabs { display: flex; gap: 6px; margin-bottom: 20px; background: #e8e3d9; padding: 4px; border-radius: 10px; }
+        .tab { flex: 1; padding: 10px; text-align: center; font-weight: bold; font-size: 14px; border: none; background: transparent; border-radius: 6px; color: #6c6c70; cursor: pointer; }
+        .tab.active { background: #ffffff; color: #1c1c1e; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        .panel { display: none; }
+        .panel.active { display: block; }
+        .card { background: #ffffff; border-radius: 14px; padding: 16px; margin-bottom: 15px; border: 1px solid #e5e0d8; }
+        .title { font-size: 18px; font-weight: bold; margin-bottom: 12px; }
+        .exercise { display: flex; align-items: flex-start; padding: 10px 0; border-bottom: 1px solid #f0ebe1; cursor: pointer; }
+        .exercise:last-child { border-bottom: none; }
+        .box { width: 22px; height: 22px; border: 2px solid #c7c2b8; border-radius: 50%; margin-right: 12px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+        .exercise.completed .box { background: #2b7a4b; border-color: #2b7a4b; }
+        .exercise.completed .box::after { content: '✓'; color: white; font-size: 12px; font-weight: bold; }
+        .exercise.completed .name { color: #6c6c70; text-decoration: line-through; }
+        .name { font-weight: 600; font-size: 15px; margin-bottom: 2px; }
+        .sets { font-size: 13px; color: #6c6c70; }
+        .reset { width: 100%; background: #ffffff; border: 1px solid #e5e0d8; color: #d9381e; padding: 12px; border-radius: 12px; font-weight: bold; margin-top: 10px; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+    <h1>Weekly Workout</h1>
+    <div class="progress" id="prog">0/15 completed</div>
+
+    <div class="tabs">
+        <button class="tab active" onclick="goTab('m', this)">Monday</button>
+        <button class="tab" onclick="goTab('w', this)">Wednesday</button>
+        <button class="tab" onclick="goTab('f', this)">Friday</button>
+    </div>
+
+    <!-- MONDAY -->
+    <div id="m" class="panel active">
+        <div class="card">
+            <div class="title">Monday – Legs, back & conditioning</div>
+            <div class="exercise" onclick="t(this)"><div class="box"></div><div><div class="name">Romanian deadlifts</div><div class="sets">3 × 8–10</div></div></div>
+            <div class="exercise" onclick="t(this)"><div class="box"></div><div><div class="name">Lat pulldowns</div><div class="sets">3 × 8–12</div></div></div>
+            <div class="exercise" onclick="t(this)"><div class="box"></div><div><div class="name">Leg press</div><div class="sets">3 × 10–12</div></div></div>
+            <div class="exercise" onclick="t(this)"><div class="box"></div><div><div class="name">Dumbbell walking lunges</div><div class="sets">2 × 10 each leg</div></div></div>
+            <div class="exercise" onclick="t(this)"><div class="box"></div><div><div class="name">Stationary bike or treadmill</div><div class="sets">10–12 minutes</div></div></div>
+        </div>
+    </div>
+
+    <!-- WEDNESDAY -->
+    <div id="w" class="panel">
+        <div class="card">
+            <div class="title">Wednesday – Full-body strength</div>
+            <div class="exercise" onclick="t(this)"><div class="box"></div><div><div class="name">Barbell bench press</div><div class="sets">4 × 5–6</div></div></div>
+            <div class="exercise" onclick="t(this)"><div class="box"></div><div><div class="name">Barbell squats</div><div class="sets">3 × 6–8</div></div></div>
+            <div class="exercise" onclick="t(this)"><div class="box"></div><div><div class="name">Seated cable rows</div><div class="sets">3 × 8–10</div></div></div>
+            <div class="exercise" onclick="t(this)"><div class="box"></div><div><div class="name">Dumbbell shoulder press</div><div class="sets">3 × 8–10</div></div></div>
+            <div class="exercise" onclick="t(this)"><div class="box"></div><div><div class="name">Cable tricep pushdowns</div><div class="sets">3 × 10–12</div></div></div>
+        </div>
+    </div>
+
+    <!-- FRIDAY -->
+    <div id="f" class="panel">
+        <div class="card">
+            <div class="title">Friday – Upper body & athletic fitness</div>
+            <div class="exercise" onclick="t(this)"><div class="box"></div><div><div class="name">Incline dumbbell bench press</div><div class="sets">3 × 8–10</div></div></div>
+            <div class="exercise" onclick="t(this)"><div class="box"></div><div><div class="name">Chest-supported row machine</div><div class="sets">3 × 8–12</div></div></div>
+            <div class="exercise" onclick="t(this)"><div class="box"></div><div><div class="name">Leg curl machine</div><div class="sets">3 × 10–12</div></div></div>
+            <div class="exercise" onclick="t(this)"><div class="box"></div><div><div class="name">Dumbbell lateral raises</div><div class="sets">3 × 12–15</div></div></div>
+            <div class="exercise" onclick="t(this)"><div class="box"></div><div><div class="name">Dumbbell hammer curls</div><div class="sets">3 × 10–12</div></div></div>
+        </div>
+    </div>
+
+    <button class="reset" onclick="res()">↺ Reset weekly checklist</button>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => { load(); up(); });
+        function goTab(id, btn) {
+            document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            btn.classList.add('active');
+        }
+        function t(el) {
+            el.classList.toggle('completed');
+            save();
+            up();
+        }
+        function up() {
+            let tot = document.querySelectorAll('.exercise').length;
+            let comp = document.querySelectorAll('.exercise.completed').length;
+            document.getElementById('prog').innerText = `${comp}/${tot} completed`;
+        }
+        function save() {
+            let state = [];
+            document.querySelectorAll('.exercise').forEach(e => state.push(e.classList.contains('completed')));
+            localStorage.setItem('fit_state', JSON.stringify(state));
+        }
+        function load() {
+            let s = localStorage.getItem('fit_state');
+            if(s) {
+                let state = JSON.parse(s);
+                let items = document.querySelectorAll('.exercise');
+                items.forEach((el, i) => { if(state[i]) el.classList.add('completed'); });
+            }
+        }
+        function res() {
+            if(confirm("Reset all checkboxes?")) {
+                document.querySelectorAll('.exercise').forEach(e => e.classList.remove('completed'));
+                localStorage.removeItem('fit_state');
+                up();
+            }
+        }
+    </script>
+</body>
+</html>
